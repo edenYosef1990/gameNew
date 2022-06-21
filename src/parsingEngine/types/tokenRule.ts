@@ -1,4 +1,6 @@
+import { Nullable } from "./nullable";
+
 export interface tokenRule {
     name : string;
-    regex: string;
+    regex: Nullable<string>;
 }
