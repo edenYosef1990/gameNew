@@ -2,7 +2,7 @@ import { reduceTreeByRule, stringToToken, subArray } from "../../parsingEngine/p
 import { grammerRule } from "../../parsingEngine/types/grammerRule";
 import { parseTreeNode } from "../../parsingEngine/types/parseNodesTree";
 import { tokenRule } from "../../parsingEngine/types/tokenRule";
-import { CompareArrays, CompareParseTreeNodeArrays, CompareParseTreeNodes, stringArrayToParseTreeNodesArray } from "../../testUtils/testUtils";
+import { CompareArrays, CompareParseTreeNodes, stringArrayToParseTreeNodesArray } from "../../testUtils/testUtils";
 
 describe('subArray() tests' , () => {
 
