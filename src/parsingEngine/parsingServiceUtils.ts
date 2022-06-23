@@ -34,7 +34,7 @@ export function stringToToken(input: string , tokenRules : tokenRule[]): parseTr
 export function reduceTreeByRule(lineParseTree : parseTreeNode[] , grammerRule : grammerRule)
  : {ruleName : string ,start : number, end :number} | null {
     for(let i = 0 ; i < lineParseTree.length ; i ++){
-        if((i + grammerRule.description.length) >= lineParseTree.length ) break;
+        if((i + grammerRule.description.length) > lineParseTree.length ) break;
         let isMatchToRule : boolean = true;
         for(let j = 0; j < grammerRule.description.length ; j ++){
             if (grammerRule.description[j] !== lineParseTree[i+j].name) {
@@ -61,10 +61,10 @@ export function inputLineToParseNodeTree(inputLine : string
     let currentRes : {ruleName: string , start : number, end :number} | null = null;
     while(
         lineParseTree.length > 1 && 
-         (currentRes = tryToReduceTree(lineParseTree,grammerRules)) !== null) {
-        lineParseTree.splice(currentRes.start,currentRes.end - currentRes.start,
-            {name : currentRes.ruleName , value : null, children : subArray(lineParseTree,currentRes.start,currentRes.end) });
+        (currentRes = tryToReduceTree(lineParseTree,grammerRules)) !== null) {
+            lineParseTree.splice(currentRes.start,1 + currentRes.end - currentRes.start,
+                {name : currentRes.ruleName , value : null, children : subArray(lineParseTree,currentRes.start,currentRes.end) });
     }
-    if (lineParseTree.length) throw new Error("cant reduce line!");
+    if (lineParseTree.length > 1) throw new Error("cant reduce line!");
     return lineParseTree[0];
 }
