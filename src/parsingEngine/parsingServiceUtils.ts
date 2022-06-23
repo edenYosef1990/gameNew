@@ -1,4 +1,6 @@
 import { grammerRule } from "./types/grammerRule";
+import { grammerRuleMatch } from "./types/grammerRuleMatch";
+import { Nullable } from "./types/nullable";
 import { parseTreeNode } from "./types/parseNodesTree";
 import { tokenRule } from "./types/tokenRule";
 
@@ -32,7 +34,7 @@ export function stringToToken(input: string , tokenRules : tokenRule[]): parseTr
 }
 
 export function reduceTreeByRule(lineParseTree : parseTreeNode[] , grammerRule : grammerRule)
- : {ruleName : string ,start : number, end :number} | null {
+ : Nullable<grammerRuleMatch> {
     for(let i = 0 ; i < lineParseTree.length ; i ++){
         if((i + grammerRule.description.length) > lineParseTree.length ) break;
         let isMatchToRule : boolean = true;
@@ -41,15 +43,15 @@ export function reduceTreeByRule(lineParseTree : parseTreeNode[] , grammerRule :
                 isMatchToRule = false; break;
             }
         }
-        if (isMatchToRule) return {ruleName : grammerRule.name , start : i , end :  i+ grammerRule.description.length - 1 }
+        if (isMatchToRule) return {grammerRule : grammerRule , start : i , end :  i+ grammerRule.description.length - 1 }
     }
     return null;
 }
 
 export function tryToReduceTree(lineParseTree : parseTreeNode[] , grammerRules : grammerRule[])
- : {ruleName : string , start : number, end :number} | null {
+ : Nullable<grammerRuleMatch> {
     for(let rule of grammerRules){
-        let res : { ruleName : string , start : number, end :number} | null = null;
+        let res : Nullable<grammerRuleMatch> = null;
         if((res = reduceTreeByRule(lineParseTree,rule)) !== null) return res;
     }
     return null;
@@ -58,12 +60,15 @@ export function tryToReduceTree(lineParseTree : parseTreeNode[] , grammerRules :
 export function inputLineToParseNodeTree(inputLine : string
     ,tokenRules : tokenRule[] , grammerRules : grammerRule[]): parseTreeNode {
     let lineParseTree : parseTreeNode[] = inputLine.split(' ').map(tokenStr => stringToToken(tokenStr,tokenRules));
-    let currentRes : {ruleName: string , start : number, end :number} | null = null;
+    let currentRes : Nullable<grammerRuleMatch> = null;
     while(
         lineParseTree.length > 1 && 
         (currentRes = tryToReduceTree(lineParseTree,grammerRules)) !== null) {
             lineParseTree.splice(currentRes.start,1 + currentRes.end - currentRes.start,
-                {name : currentRes.ruleName , value : null, children : subArray(lineParseTree,currentRes.start,currentRes.end) });
+                currentRes.grammerRule.handler === null ?
+                {name : currentRes.grammerRule.name , value : null, children : subArray(lineParseTree,currentRes.start,currentRes.end) }:
+                currentRes.grammerRule.handler!(subArray(lineParseTree,currentRes.start,currentRes.end))
+                );
     }
     if (lineParseTree.length > 1) throw new Error("cant reduce line!");
     return lineParseTree[0];

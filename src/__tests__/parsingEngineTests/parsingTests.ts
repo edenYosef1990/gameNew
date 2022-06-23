@@ -93,8 +93,8 @@ describe('reduceTreeByRule() tests', () => {
         const parseTreeNode: parseTreeNode[] = stringArrayToParseTreeNodesArray(["a", "b", "c", "d", "e"]);
         const grammerRule: grammerRule = { name: "ruleName", description: ["b", "c", "d"] , handler : null};
         const res = reduceTreeByRule(parseTreeNode, grammerRule);
-        const expected = { ruleName: 'ruleName', start: 1, end: 3 };
-        expect(compareObjects(res, expected)).toBe(true);
+        const expected = { grammerRule : grammerRule, start: 1, end: 3 };
+        expect(res).toEqual(expected);
     })
 
     test('fail : reduce by rule failed', () => {
@@ -102,7 +102,7 @@ describe('reduceTreeByRule() tests', () => {
         const grammerRule: grammerRule = { name: "ruleName", description: ["b", "z", "d"] , handler : null };
         const res = reduceTreeByRule(parseTreeNode, grammerRule);
         const expected = null;
-        expect(compareObjects(res, expected)).toBeTruthy();
+        expect(res).toEqual(expected);
     })
 })
 
@@ -112,7 +112,7 @@ describe('tryToReduceTree() tests', () => {
         const parseTreeNode: parseTreeNode[] = stringArrayToParseTreeNodesArray(["a", "b", "c", "d", "e"]);
         const grammerRule: grammerRule = { name: "ruleName", description: ["b", "c", "d"] , handler : null };
         const res = tryToReduceTree(parseTreeNode, [grammerRule]);
-        const expected = { ruleName: 'ruleName', start: 1, end: 3 };
+        const expected = { grammerRule : grammerRule, start: 1, end: 3 };
         expect(res).toEqual(expected);
     })
 
@@ -131,7 +131,7 @@ describe('inputLineToParseNodeTree() tests', () => {
         return tokenList.map(tokenStr => { return { name: tokenStr, regex: null }; });
     }
 
-    test('success : reduce by rule succesed', () => {
+    test('success : reduce by rule succesed m rule with default handler', () => {
         const line: string = "a b c d e";
         const grammerRule1: grammerRule = { name: "ruleName", description: ["b", "c", "d"] , handler : null };
         const grammerRule2: grammerRule = { name: "alone", description: ["a", "ruleName", "e"] , handler : null};
@@ -140,6 +140,23 @@ describe('inputLineToParseNodeTree() tests', () => {
         let expected: parseTreeNode[] = stringArrayToParseTreeNodesArray(["alone"]);
         expected[0].children = stringArrayToParseTreeNodesArray(["a", "ruleName", "e"]);
         expected[0].children[1].children = stringArrayToParseTreeNodesArray(["b", "c", "d"]);
+        expect(res).toEqual(expected[0]);
+    })
+
+    test('success : reduce by rule succesed m rule with custom handler', () => {
+        const line: string = "a b c d e";
+        const grammerRule1: grammerRule = { name: "ruleName", description: ["b", "c", "d"] , handler : null };
+        const grammerRule2: grammerRule = { name: "ruleName", description: ["a", "ruleName", "e"] , 
+        handler : ((nodes : parseTreeNode[]) => 
+        { 
+            let root = nodes[1];
+            return { name : root.name , value : root.value , children : [nodes[0], ...root.children , nodes[2]]}
+        } 
+        )};
+        const tokens: tokenRule[] = stringsToTokens(["a", "b", "c", "d", "e", "ruleName"]);
+        const res = inputLineToParseNodeTree(line, tokens, [grammerRule1, grammerRule2]);
+        let expected: parseTreeNode[] = stringArrayToParseTreeNodesArray(["ruleName"]);
+        expected[0].children = stringArrayToParseTreeNodesArray(["a", "b" , "c" , "d" , "e"]);
         expect(res).toEqual(expected[0]);
     })
 
