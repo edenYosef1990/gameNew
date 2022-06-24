@@ -159,6 +159,23 @@ describe('inputLineToParseNodeTree() tests', () => {
         expected[0].children = stringArrayToParseTreeNodesArray(["a", "b" , "c" , "d" , "e"]);
         expect(res).toEqual(expected[0]);
     })
+    
+    test('success : reduce by rule succesed multiple times', () => {
+        const line: string = "cmd > cmd > cmd > cmd";
+        const grammerRule1: grammerRule = { name: "cmds", description: ["cmds",">","cmd"] , 
+        handler : ((nodes : parseTreeNode[]) => 
+        { 
+            let root = nodes[0];
+            return { name : root.name , value : root.value , children : [...root.children,nodes[2]]}
+        } 
+        )};
+        const grammerRule2: grammerRule = { name: "cmds", description: ["cmd"] , handler : null };
+        const tokens: tokenRule[] = stringsToTokens(["cmd", "cmds", ">"]);
+        const res = inputLineToParseNodeTree(line, tokens, [grammerRule1, grammerRule2]);
+        let expected: parseTreeNode[] = stringArrayToParseTreeNodesArray(["cmds"]);
+        expected[0].children = stringArrayToParseTreeNodesArray(["cmd", "cmd" , "cmd" , "cmd"]);
+        expect(res).toEqual(expected[0]);
+    })
 
     test('fail : reduce by rule failed', () => {
         const line: string = "a b c d e";
@@ -166,4 +183,5 @@ describe('inputLineToParseNodeTree() tests', () => {
         const tokens: tokenRule[] = stringsToTokens(["a", "b", "c", "d", "e", "ruleName"]);
         expect(() => inputLineToParseNodeTree(line, tokens, [grammerRule])).toThrowError("cant reduce line!");
     })
+    
 })
