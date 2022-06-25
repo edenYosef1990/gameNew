@@ -1,10 +1,10 @@
-import { tokenRule } from "./parsingEngine/types/tokenRule";
-import { grammerRule } from "./parsingEngine/types/grammerRule";
-import { inputLineToParseNodeTree, subArray, tryToReduceTree } from "./parsingEngine/parsingServiceUtils";
-import { parseTreeNode } from "./parsingEngine/types/parseNodesTree";
+import { tokenRule } from "./parsingEngine/typesTypes/tokenRule";
+import { grammerRule } from "./parsingEngine/typesTypes/grammerRule";
+import { inputLineToParseNodeTree, subArray, tryToReduceTree } from "./parsingEngine/services/parsingText/parsingServiceUtils";
+import { parseTreeNode } from "./parsingEngine/typesTypes/parseNodesTree";
 import { stringArrayToParseTreeNodesArray } from "./testUtils/testUtils";
-import { grammerRuleMatch } from "./parsingEngine/types/grammerRuleMatch";
-import { Nullable } from "./parsingEngine/types/nullable";
+import { grammerRuleMatch } from "./parsingEngine/typesTypes/grammerRuleMatch";
+import { Nullable } from "./parsingEngine/typesTypes/nullable";
 
 function stringsToTokens(tokenList : string[]) : tokenRule[] {
     return tokenList.map(tokenStr => {return {name : tokenStr , regex : null};});
