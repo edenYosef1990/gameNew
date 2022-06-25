@@ -1,4 +1,4 @@
-import { parseTreeNode } from "../parsingEngine/types/parseNodesTree";
+import { parseTreeNode } from "../parsingEngine/typesTypes/parseNodesTree";
 
 export function CompareArrays<T>(left: T[] , right: T[]): boolean {
     if(left === null && right === null) return true;

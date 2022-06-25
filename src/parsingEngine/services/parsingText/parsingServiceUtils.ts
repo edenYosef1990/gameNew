@@ -1,8 +1,8 @@
-import { grammerRule } from "./types/grammerRule";
-import { grammerRuleMatch } from "./types/grammerRuleMatch";
-import { Nullable } from "./types/nullable";
-import { parseTreeNode } from "./types/parseNodesTree";
-import { tokenRule } from "./types/tokenRule";
+import { grammerRule } from "../../typesTypes/grammerRule";
+import { grammerRuleMatch } from "../../typesTypes/grammerRuleMatch";
+import { Nullable } from "../../typesTypes/nullable";
+import { parseTreeNode } from "../../typesTypes/parseNodesTree";
+import { tokenRule } from "../../typesTypes/tokenRule";
 
 export function subArray<T>(array: T[] , start : number, end : number) : T[] {
     if( array === null || start < 0 || start >= array.length || end < 0 || end >= array.length || start > end) {
