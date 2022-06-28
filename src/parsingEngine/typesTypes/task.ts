@@ -10,22 +10,18 @@ export interface TaskRuntimeData {
 export interface ITask {
     id: number;
     controlFlowRef: IcontrolFlowNode;
-    tick: () => boolean;
-    onFinish: () => Nullable<ITask>;
-    runtimeData : TaskRuntimeData;
-    onStart: (scopeService : scopeService) => void;
+    tick: Nullable<() => boolean>
+    getFollowingControlFlowNode: () => Nullable<IcontrolFlowNode>
 }
 
 export interface ICommandTask extends ITask {
-
+    unitsIds: string;
 }
 
 export interface AttackTask extends ICommandTask {
-    unitsIds: string;
-    destCoords: string;
+    destCoords: number[];
 }
 
 export interface MoveTask extends ICommandTask {
-    unitsIds: string;
-    destCoords: string;
+    destCoords: number[];
 }
