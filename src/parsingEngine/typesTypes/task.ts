@@ -10,7 +10,6 @@ export interface TaskRuntimeData {
 export interface ITask {
     id: number;
     controlFlowRef: IcontrolFlowNode;
-    tick: Nullable<() => boolean>
     getFollowingControlFlowNode: () => Nullable<IcontrolFlowNode>
 }
 

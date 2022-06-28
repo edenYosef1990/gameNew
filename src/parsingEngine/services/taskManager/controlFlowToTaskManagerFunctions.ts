@@ -17,7 +17,6 @@ export function getGenNextTasksFuncDict() : Dictionary<string,GenNextTasksFunc> 
             destCoords: scopeService.Load(cmdCurrentNode.group) as number[],
             controlFlowRef : currentControlFlowNode,
             id : id,
-            tick: null,
             getFollowingControlFlowNode: () => currentControlFlowNode.followup[0]
          }
         return [attackTask]
@@ -31,7 +30,6 @@ export function getGenNextTasksFuncDict() : Dictionary<string,GenNextTasksFunc> 
             destCoords: scopeService.Load(cmdCurrentNode.group) as number[],
             controlFlowRef : currentControlFlowNode,
             id : id,
-            tick: null,
             getFollowingControlFlowNode: () => currentControlFlowNode.followup[0]
          }
         return [attackTask]

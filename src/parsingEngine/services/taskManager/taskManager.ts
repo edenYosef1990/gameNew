@@ -34,7 +34,7 @@ export class TaskManager {
     tick() : void {
         let finishedTasks : ITask[] = [];
         for(let task of this.activeTasks.values()){
-            if(task.tick && task.tick()) {
+            if(this.tickTask(task)) {
                 finishedTasks.push(task)
             }
         }
@@ -46,4 +46,8 @@ export class TaskManager {
              for(let newTask of newTasks) this.activeTasks.setValue(newTask.id,newTask);
         }
     }
+
+    tickTask(task: ITask) : boolean{ return true;}
+    
+
 }
