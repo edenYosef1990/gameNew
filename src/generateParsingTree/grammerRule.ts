@@ -1,4 +1,4 @@
-import { Nullable } from "./nullable";
+import { Nullable } from "../commonTypes/nullable";
 import { parseTreeNode } from "./parseNodesTree";
 
 export interface grammerRule {

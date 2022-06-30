@@ -1,6 +1,6 @@
 import { isArguments } from "lodash";
-import { IcontrolFlowNode } from "../parsingEngine/services/controlFlowGraph/types/controlFlowNode";
-import { parseTreeNode } from "../parsingEngine/typesTypes/parseNodesTree";
+import { IcontrolFlowNode } from "../generateControlFlowGraph/controlFlowNode";
+import { parseTreeNode } from "../generateParsingTree/parseNodesTree";
 
 export function CompareArrays<T>(left: T[] , right: T[]): boolean {
     if(left === null && right === null) return true;

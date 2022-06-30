@@ -1,7 +1,7 @@
 import { Dictionary } from "typescript-collections";
-import { parseTreeNode } from "../../../typesTypes/parseNodesTree";
-import { IcontrolFlowNode as ControlFlowNode, IcontrolFlowNode } from "../types/controlFlowNode";
+import { IcontrolFlowNode as ControlFlowNode, IcontrolFlowNode } from "./controlFlowNode";
 import { DefinitionsScope, getDict } from './controlFlowFunctions';
+import { parseTreeNode } from '../generateParsingTree/parseNodesTree';
 
 export class ControlFlowService {
 

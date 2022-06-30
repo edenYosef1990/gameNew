@@ -1,10 +1,10 @@
 import { Dictionary } from "typescript-collections";
-import { ICommandTask, ITask } from "../../typesTypes/task";
-import { ControlFlowService } from "../controlFlowGraph/services/controlFlowService";
-import { scopeService } from "../scopeService/scopeService";
-import { IcontrolFlowNode } from '../controlFlowGraph/types/controlFlowNode';
+import { ICommandTask, ITask } from "./task";
+import { ControlFlowService } from "../generateControlFlowGraph/controlFlowService";
+import { scopeService } from "../scopeManagment/scopeService";
+import { IcontrolFlowNode } from '../generateControlFlowGraph/controlFlowNode';
 import { GenNextTasksFunc, getGenNextTasksFuncDict } from "./controlFlowToTaskManagerFunctions";
-import { Nullable } from "../../typesTypes/nullable";
+import { Nullable } from "../commonTypes/nullable";
 
 export class TaskManager {
     

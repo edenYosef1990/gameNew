@@ -1,6 +1,6 @@
 import { Dictionary } from "typescript-collections";
-import { parseTreeNode } from "../../../typesTypes/parseNodesTree";
-import { AttackControlFlowNode, IcontrolFlowNode } from "../types/controlFlowNode";
+import { parseTreeNode } from '../generateParsingTree/parseNodesTree';
+import { AttackControlFlowNode, IcontrolFlowNode } from "./controlFlowNode";
 
 export type DefinitionsScope = Dictionary<string,number>;
 type controlFlowGenFunc = (parseTreeNode : parseTreeNode , definitionsScope : DefinitionsScope) => IcontrolFlowNode[]; 

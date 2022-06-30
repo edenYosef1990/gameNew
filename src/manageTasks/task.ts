@@ -1,7 +1,5 @@
-import { IcontrolFlowNode } from "../services/controlFlowGraph/types/controlFlowNode";
-import { scopeService } from "../services/scopeService/scopeService";
-import { Point } from "./coordinates"
-import { Nullable } from "./nullable";
+import { IcontrolFlowNode } from "../generateControlFlowGraph/controlFlowNode";
+import { Nullable } from "../commonTypes/nullable";
 
 export interface TaskRuntimeData {
 

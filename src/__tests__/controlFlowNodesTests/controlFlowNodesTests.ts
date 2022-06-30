@@ -1,9 +1,9 @@
 //ControlFlowService
 
-import { ControlFlowService } from "../../parsingEngine/services/controlFlowGraph/services/controlFlowService";
-import { AttackControlFlowNode, IcontrolFlowNode, MoveControlFlowNode } from "../../parsingEngine/services/controlFlowGraph/types/controlFlowNode";
-import { parseTreeNode } from "../../parsingEngine/typesTypes/parseNodesTree";
+import { ControlFlowService } from "../../generateControlFlowGraph/controlFlowService";
+import { AttackControlFlowNode, IcontrolFlowNode, MoveControlFlowNode } from "../../generateControlFlowGraph/controlFlowNode";
 import { ControlFlowNodesArrayToControlFlowLinkedList, stringArrayToParseTreeNodesArray } from "../../testUtils/testUtils";
+import { parseTreeNode } from "../../generateParsingTree/parseNodesTree";
 
 describe('testing converting parsingTrees to control flow graph using the dictionary',() => {
     test('simple test',() => {

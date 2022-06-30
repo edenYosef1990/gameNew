@@ -1,8 +1,8 @@
-import { inputLineToParseNodeTree, reduceTreeByRule, stringToToken, subArray, tryToReduceTree } from "../../parsingEngine/services/parsingText/parsingServiceUtils";
-import { grammerRule } from "../../parsingEngine/typesTypes/grammerRule";
-import { parseTreeNode } from "../../parsingEngine/typesTypes/parseNodesTree";
-import { tokenRule } from "../../parsingEngine/typesTypes/tokenRule";
+import { inputLineToParseNodeTree, reduceTreeByRule, stringToToken, subArray, tryToReduceTree } from "../../generateParsingTree/parsingServiceUtils";
+import { grammerRule } from "../../generateParsingTree/grammerRule";
 import { CompareArrays, CompareParseTreeNodes, stringArrayToParseTreeNodesArray } from "../../testUtils/testUtils";
+import { tokenRule } from "../../generateParsingTree/tokenRule";
+import { parseTreeNode } from "../../generateParsingTree/parseNodesTree";
 
 describe('subArray() tests', () => {
 

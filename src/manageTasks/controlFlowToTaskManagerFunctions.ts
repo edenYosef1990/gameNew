@@ -1,8 +1,8 @@
 import { Dictionary } from "typescript-collections";
-import { Nullable } from "../../typesTypes/nullable";
-import { AttackTask, ICommandTask, ITask, MoveTask } from "../../typesTypes/task";
-import { AttackControlFlowNode, IcontrolFlowNode } from "../controlFlowGraph/types/controlFlowNode";
-import { scopeService } from "../scopeService/scopeService";
+import { Nullable } from "../commonTypes/nullable";
+import { AttackTask, ICommandTask, ITask, MoveTask } from "./task";
+import { AttackControlFlowNode, IcontrolFlowNode } from "../generateControlFlowGraph/controlFlowNode";
+import { scopeService } from "../scopeManagment/scopeService";
 
 export type GenNextTasksFunc = 
 (currentControlFlowNode : IcontrolFlowNode ,scopeService : scopeService , id : number , formerTask : Nullable<ITask> ) => ITask[];
