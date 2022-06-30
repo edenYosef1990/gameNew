@@ -1,6 +1,6 @@
 import { Dictionary } from "typescript-collections";
 import { parseTreeNode } from "../../../typesTypes/parseNodesTree";
-import { AttackcontrolFlowNode, IcontrolFlowNode } from "../types/controlFlowNode";
+import { AttackControlFlowNode, IcontrolFlowNode } from "../types/controlFlowNode";
 
 export type DefinitionsScope = Dictionary<string,number>;
 type controlFlowGenFunc = (parseTreeNode : parseTreeNode , definitionsScope : DefinitionsScope) => IcontrolFlowNode[]; 
@@ -18,12 +18,12 @@ Dictionary<string,controlFlowGenFunc>{
         let commands = parseTreeNode.children;
         for(let cmd of commands){
             if(!controlFlowNode){
-                let res = dict.getValue(cmd.name)!(parseTreeNode,definitionsScope);
+                let res = dict.getValue(cmd.name)!(cmd,definitionsScope);
                 controlFlowNode =res[1];
                 first = res[0];
                 continue;
             }
-            let res = dict.getValue(cmd.name)!(parseTreeNode,definitionsScope);
+            let res = dict.getValue(cmd.name)!(cmd,definitionsScope);
             let node = res[1];
             controlFlowNode.followup = [node];
             controlFlowNode = node;
@@ -31,14 +31,24 @@ Dictionary<string,controlFlowGenFunc>{
         return [first!,controlFlowNode!];
     });
 
-    dict.setValue("attackCmd",
+    dict.setValue("atkCmd",
     (parseTreeNode : parseTreeNode) => {
-        let resValue : AttackcontrolFlowNode = {
+        let resValue : AttackControlFlowNode = {
             name : "attack" , followup : [] , 
         group : parseTreeNode.children[0].value! , 
         dest: parseTreeNode.children[1].value! }
         return [resValue,resValue];
     });
+
+    dict.setValue("movCmd",
+    (parseTreeNode : parseTreeNode) => {
+        let resValue : AttackControlFlowNode = {
+            name : "move" , followup : [] , 
+        group : parseTreeNode.children[0].value! , 
+        dest: parseTreeNode.children[1].value! }
+        return [resValue,resValue];
+    });    
+
     
     return dict;
 } 

@@ -3,7 +3,12 @@ export interface IcontrolFlowNode {
     followup :IcontrolFlowNode[]
 }
 
-export interface AttackcontrolFlowNode extends IcontrolFlowNode {
+export interface AttackControlFlowNode extends IcontrolFlowNode {
+    group: string,
+    dest: string;
+}
+
+export interface MoveControlFlowNode extends IcontrolFlowNode {
     group: string,
     dest: string;
 }

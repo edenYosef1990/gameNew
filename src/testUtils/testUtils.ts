@@ -1,3 +1,5 @@
+import { isArguments } from "lodash";
+import { IcontrolFlowNode } from "../parsingEngine/services/controlFlowGraph/types/controlFlowNode";
 import { parseTreeNode } from "../parsingEngine/typesTypes/parseNodesTree";
 
 export function CompareArrays<T>(left: T[] , right: T[]): boolean {
@@ -32,4 +34,15 @@ export function CompareParseTreeNodeArrays(left : parseTreeNode[] , right : pars
 
 export function stringArrayToParseTreeNodesArray(input: string[] ) : parseTreeNode[] {
     return input.map(str => {return { name : str , value : null , children: []};});
+}
+
+export function ControlFlowNodesArrayToControlFlowLinkedList(input: IcontrolFlowNode[] ) : IcontrolFlowNode | null {
+    if (input.length === 0) return null;
+    let firstNode = input[0];
+    let iterNode = firstNode;
+    for(let i=1 ; i < input.length ; i++){
+        iterNode.followup = [input[i]];
+        iterNode = input[i];
+    }
+    return firstNode;
 }

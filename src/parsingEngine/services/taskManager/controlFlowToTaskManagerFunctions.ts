@@ -1,7 +1,7 @@
 import { Dictionary } from "typescript-collections";
 import { Nullable } from "../../typesTypes/nullable";
 import { AttackTask, ICommandTask, ITask, MoveTask } from "../../typesTypes/task";
-import { AttackcontrolFlowNode, IcontrolFlowNode } from "../controlFlowGraph/types/controlFlowNode";
+import { AttackControlFlowNode, IcontrolFlowNode } from "../controlFlowGraph/types/controlFlowNode";
 import { scopeService } from "../scopeService/scopeService";
 
 export type GenNextTasksFunc = 
@@ -11,7 +11,7 @@ export function getGenNextTasksFuncDict() : Dictionary<string,GenNextTasksFunc> 
 
     dict.setValue("atkCmd",(currentControlFlowNode, scopeService,id,formerTask = null) => {
         let cmdFormerTask : ICommandTask = formerTask as ICommandTask;
-        let cmdCurrentNode : AttackcontrolFlowNode = currentControlFlowNode as AttackcontrolFlowNode;
+        let cmdCurrentNode : AttackControlFlowNode = currentControlFlowNode as AttackControlFlowNode;
         let attackTask : AttackTask = {
             unitsIds: cmdFormerTask.unitsIds, 
             destCoords: scopeService.Load(cmdCurrentNode.group) as number[],
@@ -24,7 +24,7 @@ export function getGenNextTasksFuncDict() : Dictionary<string,GenNextTasksFunc> 
 
     dict.setValue("moveCmd",(currentControlFlowNode, scopeService,id,formerTask = null) => {
         let cmdFormerTask : ICommandTask = formerTask as ICommandTask;
-        let cmdCurrentNode : AttackcontrolFlowNode = currentControlFlowNode as AttackcontrolFlowNode;
+        let cmdCurrentNode : AttackControlFlowNode = currentControlFlowNode as AttackControlFlowNode;
         let attackTask : MoveTask = {
             unitsIds: cmdFormerTask.unitsIds, 
             destCoords: scopeService.Load(cmdCurrentNode.group) as number[],
