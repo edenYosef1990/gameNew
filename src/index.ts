@@ -4,17 +4,30 @@
 import { stringArrayToParseTreeNodesArray } from "./testUtils/testUtils";
 import { ControlFlowService } from "./generateControlFlowGraph/controlFlowService";
 import { parseTreeNode } from "./generateParsingTree/parseNodesTree";
+import { grammerRule } from "./generateParsingTree/grammerRule";
+import { tokenRule } from "./generateParsingTree/tokenRule";
+import { inputLineToParseNodeTree } from "./generateParsingTree/parsingServiceUtils";
 
-let input: parseTreeNode[] = stringArrayToParseTreeNodesArray(["cmds"]);
-input[0].children = stringArrayToParseTreeNodesArray(["atkCmd","movCmd"]);
-for(let node of input[0].children){
-    node.children = [
-    {name : "" , value: "group123" , children: [] } as parseTreeNode,
-    {name : "" , value: "dest123" , children: [] } as parseTreeNode];
+
+function stringsToTokens(tokenList: string[]): tokenRule[] {
+    return tokenList.map(tokenStr => { return { name: tokenStr, regex: null }; });
 }
-let service : ControlFlowService = new ControlFlowService();
 
-service.absorveParsedTree(input[0]);
 
-//console.log(JSON.stringify(input[0],null,5));
-console.log(JSON.stringify(service.startNodes[0],null,5));
+const line: string = "a cmd";
+const grammerRule1: grammerRule = {
+    name: "cmds", description: ["cmds", ">", "cmd"],
+    handler: ((nodes: parseTreeNode[]) => {
+        let root = nodes[0];
+        return { name: root.name, value: root.value, children: [...root.children, nodes[2]] }
+    }
+    )
+};
+const grammerRule2: grammerRule = { name: "cmds", description: ["cmd"], handler: null };
+const grammerRule3: grammerRule = { name: "statment", description: ["a", "cmds"], handler: null };
+const tokens: tokenRule[] = stringsToTokens(["a", "cmd", "cmds", ">"]);
+const res = inputLineToParseNodeTree(line, tokens, [grammerRule1, grammerRule2, grammerRule3]);
+let expected: parseTreeNode[] = stringArrayToParseTreeNodesArray(["cmds"]);
+expected[0].children = stringArrayToParseTreeNodesArray(["cmd"]);
+
+console.log(JSON.stringify(res, null, 5));

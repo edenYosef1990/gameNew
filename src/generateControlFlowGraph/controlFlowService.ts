@@ -1,20 +1,20 @@
 import { Dictionary } from "typescript-collections";
 import { IcontrolFlowNode as ControlFlowNode, IcontrolFlowNode } from "./controlFlowNode";
-import { DefinitionsScope, getDict } from './controlFlowFunctions';
+import { getDict } from './controlFlowFunctions';
 import { parseTreeNode } from '../generateParsingTree/parseNodesTree';
+import { labelScoper } from "./labelScoper";
 
 export class ControlFlowService {
 
-    dict: Dictionary<string,(parseTreeNode : parseTreeNode , definitionsScope : DefinitionsScope) => IcontrolFlowNode[]>
-    startNodes: ControlFlowNode[] = []
+    dict: Dictionary<string,(parseTreeNode : parseTreeNode) => IcontrolFlowNode[]>
 
     constructor(){
         this.dict = getDict();
     }
 
 
-    absorveParsedTree(parseNodesTree : parseTreeNode) : void{
-        this.startNodes.push(this.dict.getValue(parseNodesTree.name)!
-        (parseNodesTree, new Dictionary<string,number>() )[0]);
+    parseTreeToTaskGraph(parseNodesTree : parseTreeNode) : IcontrolFlowNode{
+        return this.dict.getValue(parseNodesTree.name)!
+        (parseNodesTree)[0];
     }
 }

@@ -177,6 +177,26 @@ describe('inputLineToParseNodeTree() tests', () => {
         expect(res).toEqual(expected[0]);
     })
 
+
+    test('success : reduce by rule succesed multiple times fot single item', () => {
+        const line: string = "a cmd";
+        const grammerRule1: grammerRule = { name: "cmds", description: ["cmds",">","cmd"] , 
+        handler : ((nodes : parseTreeNode[]) => 
+        { 
+            let root = nodes[0];
+            return { name : root.name , value : root.value , children : [...root.children,nodes[2]]}
+        } 
+        )};
+        const grammerRule2: grammerRule = { name: "cmds", description: ["cmd"] , handler : null };
+        const grammerRule3: grammerRule = { name: "statment", description: ["a","cmds"] , handler : null };
+        const tokens: tokenRule[] = stringsToTokens(["a","cmd", "cmds", ">"]);
+        const res = inputLineToParseNodeTree(line, tokens, [grammerRule1, grammerRule2,grammerRule3]);
+        let expected: parseTreeNode[] = stringArrayToParseTreeNodesArray(["statment"]);
+        expected[0].children = stringArrayToParseTreeNodesArray(["a","cmds"]);
+        expected[0].children[1].children = stringArrayToParseTreeNodesArray(["cmd"]);
+        expect(res).toEqual(expected[0]);
+    })
+
     test('fail : reduce by rule failed', () => {
         const line: string = "a b c d e";
         const grammerRule: grammerRule = { name: "ruleName", description: ["b", "z", "d"] , handler : null };

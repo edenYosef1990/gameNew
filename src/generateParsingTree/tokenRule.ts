@@ -1,4 +1,4 @@
-import { Nullable } from "../../commonTypes/nullable";
+import { Nullable } from "../commonTypes/nullable";
 
 export interface tokenRule {
     name : string;

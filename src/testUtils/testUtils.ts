@@ -41,7 +41,7 @@ export function ControlFlowNodesArrayToControlFlowLinkedList(input: IcontrolFlow
     let firstNode = input[0];
     let iterNode = firstNode;
     for(let i=1 ; i < input.length ; i++){
-        iterNode.followup = [input[i]];
+        iterNode.edgeNodes = [input[i]];
         iterNode = input[i];
     }
     return firstNode;

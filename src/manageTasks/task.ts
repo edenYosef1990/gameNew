@@ -12,13 +12,12 @@ export interface ITask {
 }
 
 export interface ICommandTask extends ITask {
-    unitsIds: string;
+    unitsIds: number[];
+    destCoords: number[];
 }
 
 export interface AttackTask extends ICommandTask {
-    destCoords: number[];
 }
 
 export interface MoveTask extends ICommandTask {
-    destCoords: number[];
 }

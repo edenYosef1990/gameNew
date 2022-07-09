@@ -1,22 +1,23 @@
 import { Dictionary } from "typescript-collections";
 import { ICommandTask, ITask } from "./task";
 import { ControlFlowService } from "../generateControlFlowGraph/controlFlowService";
-import { scopeService } from "../scopeManagment/scopeService";
+import { memScopeService } from "../scopeManagment/scopeService";
 import { IcontrolFlowNode } from '../generateControlFlowGraph/controlFlowNode';
 import { GenNextTasksFunc, getGenNextTasksFuncDict } from "./controlFlowToTaskManagerFunctions";
 import { Nullable } from "../commonTypes/nullable";
+import { MovementManager } from "../movementManager/movementManager";
 
 export class TaskManager {
     
-    readonly scopeService: scopeService;
+    readonly scopeService: memScopeService;
     readonly controlFlowService : ControlFlowService;
     readonly activeTasks: Dictionary<number,ITask> = new Dictionary<number,ITask>();
     readonly dict: Dictionary<string,GenNextTasksFunc>;
 
     lastId: number = 0;
 
-    constructor(scopeService : scopeService , controlFlowService : ControlFlowService){
-        this.scopeService = scopeService;
+    constructor(memScopeService : memScopeService , controlFlowService : ControlFlowService,movementManager : MovementManager){
+        this.scopeService = memScopeService;
         this.controlFlowService = controlFlowService;
         this.dict = getGenNextTasksFuncDict();
     }
@@ -25,9 +26,8 @@ export class TaskManager {
         return this.dict.getValue(controlFlowNode.name)!(controlFlowNode,this.scopeService,this.lastId++,formerTask);
     }
 
-    executeControlFlowNodes(){
-        const tasks = this.controlFlowService.startNodes
-        .map(controlFlowNode => this.generateNewTaskFromFormer(controlFlowNode,null)).flat();
+    executeControlFlowNodes(controlFlowNode : IcontrolFlowNode){
+        let tasks  =this.generateNewTaskFromFormer(controlFlowNode,null);
         for(var task of tasks) this.activeTasks.setValue(task.id,task);
     }
 

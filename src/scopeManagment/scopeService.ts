@@ -6,7 +6,7 @@ export interface Memmory {
     data : any;
 }
 
-export class scopeService {
+export class memScopeService {
 
     private memory: Dictionary<string,object> = new Dictionary<string,Memmory>();
 

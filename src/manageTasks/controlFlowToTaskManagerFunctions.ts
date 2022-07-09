@@ -1,11 +1,11 @@
 import { Dictionary } from "typescript-collections";
 import { Nullable } from "../commonTypes/nullable";
 import { AttackTask, ICommandTask, ITask, MoveTask } from "./task";
-import { AttackControlFlowNode, IcontrolFlowNode } from "../generateControlFlowGraph/controlFlowNode";
-import { scopeService } from "../scopeManagment/scopeService";
+import { AttackControlFlowNode, IcontrolFlowNode, SetValuesForCommands } from "../generateControlFlowGraph/controlFlowNode";
+import { memScopeService } from "../scopeManagment/scopeService";
 
 export type GenNextTasksFunc = 
-(currentControlFlowNode : IcontrolFlowNode ,scopeService : scopeService , id : number , formerTask : Nullable<ITask> ) => ITask[];
+(currentControlFlowNode : IcontrolFlowNode ,scopeService : memScopeService , id : number , formerTask : Nullable<ITask> ) => ITask[];
 export function getGenNextTasksFuncDict() : Dictionary<string,GenNextTasksFunc> {
     let dict = new Dictionary<string,GenNextTasksFunc>();
 
@@ -17,7 +17,7 @@ export function getGenNextTasksFuncDict() : Dictionary<string,GenNextTasksFunc> 
             destCoords: scopeService.Load(cmdCurrentNode.group) as number[],
             controlFlowRef : currentControlFlowNode,
             id : id,
-            getFollowingControlFlowNode: () => currentControlFlowNode.followup[0]
+            getFollowingControlFlowNode: () => currentControlFlowNode.edgeNodes[0]
          }
         return [attackTask]
     })
@@ -30,10 +30,21 @@ export function getGenNextTasksFuncDict() : Dictionary<string,GenNextTasksFunc> 
             destCoords: scopeService.Load(cmdCurrentNode.group) as number[],
             controlFlowRef : currentControlFlowNode,
             id : id,
-            getFollowingControlFlowNode: () => currentControlFlowNode.followup[0]
+            getFollowingControlFlowNode: () => currentControlFlowNode.edgeNodes[0]
          }
         return [attackTask]
     })
 
+    dict.setValue("setValuesForCmds",(currentControlFlowNode, memScopeService,id,_formerTask = null): ICommandTask[] => {
+        let cmdCurrentNode : SetValuesForCommands = currentControlFlowNode as SetValuesForCommands;
+        let setValuesForCmdsTask : ICommandTask = {
+            unitsIds: memScopeService.Load(cmdCurrentNode.group) as number[], 
+            destCoords: memScopeService.Load(cmdCurrentNode.dest) as number[],
+            controlFlowRef: currentControlFlowNode,
+            id : id,
+            getFollowingControlFlowNode: () => currentControlFlowNode.edgeNodes[0]
+         }
+        return [setValuesForCmdsTask]
+    })
     return dict;
 }
