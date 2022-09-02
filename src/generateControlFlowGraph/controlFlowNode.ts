@@ -16,6 +16,7 @@ export interface IcontrolFlowNode {
 
 export interface AttackControlFlowNode extends IcontrolFlowNode {
     dest: string;
+    group : string;
 }
 
 export interface MoveControlFlowNode extends IcontrolFlowNode {

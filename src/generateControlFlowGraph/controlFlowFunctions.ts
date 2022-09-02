@@ -46,7 +46,8 @@ Dictionary<string,controlFlowGenFunc>{
     (parseTreeNode : parseTreeNode ) => {
         let resValue : AttackControlFlowNode = {
             name : "attack" , edgeNodes : [] , 
-        dest:  parseTreeNode.children[1].value!}
+            group: parseTreeNode.children[0].value! ,
+            dest:  parseTreeNode.children[1].value!}
         return [resValue,resValue];
     });
 
@@ -54,6 +55,7 @@ Dictionary<string,controlFlowGenFunc>{
     (parseTreeNode : parseTreeNode) => {
         let resValue : AttackControlFlowNode = {
             name : "move" , edgeNodes : [] , 
+            group: parseTreeNode.children[0].value! ,
         dest: parseTreeNode.children[1].value! }
         return [resValue,resValue];
     });    

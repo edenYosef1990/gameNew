@@ -4,7 +4,11 @@ import { getDict } from './controlFlowFunctions';
 import { parseTreeNode } from '../generateParsingTree/parseNodesTree';
 import { labelScoper } from "./labelScoper";
 
-export class ControlFlowService {
+export interface IControlFlowService {
+    parseTreeToTaskGraph(parseNodesTree : parseTreeNode) : IcontrolFlowNode;
+}
+
+export class ControlFlowService implements IControlFlowService {
 
     dict: Dictionary<string,(parseTreeNode : parseTreeNode) => IcontrolFlowNode[]>
 

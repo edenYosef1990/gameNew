@@ -1,25 +1,36 @@
 import { Dictionary } from "typescript-collections";
-import { ICommandTask, ITask } from "./task";
-import { ControlFlowService } from "../generateControlFlowGraph/controlFlowService";
-import { memScopeService } from "../scopeManagment/scopeService";
+import { ITask } from "./task";
+import { IControlFlowService } from "../generateControlFlowGraph/controlFlowService";
+import { ImemScopeService, } from "../scopeManagment/scopeService";
 import { IcontrolFlowNode } from '../generateControlFlowGraph/controlFlowNode';
 import { GenNextTasksFunc, getGenNextTasksFuncDict } from "./controlFlowToTaskManagerFunctions";
 import { Nullable } from "../commonTypes/nullable";
-import { MovementManager } from "../movementManager/movementManager";
+import { IMovementManager} from "../movementManager/movementManager";
+import { ITaskAggragatorService} from "../tasksAggragatorService";
 
-export class TaskManager {
+export interface ITaskManager {
+
+    generateNewTaskFromFormer(controlFlowNode : IcontrolFlowNode,formerTask : Nullable<ITask>): ITask[];
+    executeControlFlowNodes(controlFlowNode : IcontrolFlowNode): void;
+    tick() : void;
+}
+
+export class TaskManager implements ITaskManager{
     
-    readonly scopeService: memScopeService;
-    readonly controlFlowService : ControlFlowService;
+    readonly scopeService: ImemScopeService;
+    readonly controlFlowService : IControlFlowService;
     readonly activeTasks: Dictionary<number,ITask> = new Dictionary<number,ITask>();
     readonly dict: Dictionary<string,GenNextTasksFunc>;
+    readonly tasksAggragatorService : ITaskAggragatorService; 
 
     lastId: number = 0;
 
-    constructor(memScopeService : memScopeService , controlFlowService : ControlFlowService,movementManager : MovementManager){
+    constructor(memScopeService : ImemScopeService , controlFlowService : IControlFlowService,movementManager : IMovementManager
+        , tasksAggragatorService : ITaskAggragatorService){
         this.scopeService = memScopeService;
         this.controlFlowService = controlFlowService;
         this.dict = getGenNextTasksFuncDict();
+        this.tasksAggragatorService = tasksAggragatorService;
     }
 
     generateNewTaskFromFormer(controlFlowNode : IcontrolFlowNode,formerTask : Nullable<ITask>): ITask[] {
@@ -47,7 +58,9 @@ export class TaskManager {
         }
     }
 
-    tickTask(task: ITask) : boolean{ return true;}
+    tickTask(task: ITask) : boolean{ 
+        return this.tasksAggragatorService.runTask(task)
+    }
     
 
 }

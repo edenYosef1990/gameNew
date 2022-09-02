@@ -67,12 +67,11 @@ describe('test complete commands order', () => {
         }
         let service: ControlFlowService = new ControlFlowService();
         let expectedCommands : IcontrolFlowNode = ControlFlowNodesArrayToControlFlowLinkedList(
-            [{ name: "order" , group : "group123" , dest : "dest123" , edgeNodes : []} as SetValuesForCommands,
-            { name: "attack", dest: "dest123", edgeNodes: [] } as AttackControlFlowNode,
-            { name: "move", dest: "dest123", edgeNodes: [] } as MoveControlFlowNode,
-            { name: "attack", dest: "dest123", edgeNodes: [] } as AttackControlFlowNode,
-            { name: "move", dest: "dest123", edgeNodes: [] } as MoveControlFlowNode,
-            { name: "attack", dest: "dest123", edgeNodes: [] } as AttackControlFlowNode])!;
+            [{ name: "attack", dest: "dest123", edgeNodes: [] , group : "group123"} as AttackControlFlowNode,
+            { name: "move", dest: "dest123", edgeNodes: [], group : "group123" } as MoveControlFlowNode,
+            { name: "attack", dest: "dest123", edgeNodes: [], group : "group123" } as AttackControlFlowNode,
+            { name: "move", dest: "dest123", edgeNodes: [] , group : "group123"} as MoveControlFlowNode,
+            { name: "attack", dest: "dest123", edgeNodes: [] , group : "group123"} as AttackControlFlowNode])!;
 
         
         let res = service.parseTreeToTaskGraph(input[0]);

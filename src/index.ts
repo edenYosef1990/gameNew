@@ -9,6 +9,7 @@ import { tokenRule } from "./generateParsingTree/tokenRule";
 import { inputLineToParseNodeTree } from "./generateParsingTree/parsingServiceUtils";
 
 
+
 function stringsToTokens(tokenList: string[]): tokenRule[] {
     return tokenList.map(tokenStr => { return { name: tokenStr, regex: null }; });
 }

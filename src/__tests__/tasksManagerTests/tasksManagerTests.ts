@@ -1,29 +1,36 @@
 import { AttackControlFlowNode, IcontrolFlowNode, MoveControlFlowNode, SetValuesForCommands } from "../../generateControlFlowGraph/controlFlowNode";
-import { ControlFlowService } from "../../generateControlFlowGraph/controlFlowService";
+import { ControlFlowService, IControlFlowService } from "../../generateControlFlowGraph/controlFlowService";
 import { TaskManager } from "../../manageTasks/taskManager";
-import { MovementManager } from "../../movementManager/movementManager";
-import { memScopeService } from "../../scopeManagment/scopeService";
+import { ImemScopeService } from "../../scopeManagment/scopeService";
 import { ControlFlowNodesArrayToControlFlowLinkedList } from "../../testUtils/testUtils";
+import { mock } from 'jest-mock-extended';
+import { IMovementManager } from "../../movementManager/movementManager";
+import { ITaskAggragatorService } from "../../tasksAggragatorService";
+import { SetValuesForCommandsTask } from "../../manageTasks/task";
 
 describe('test taskManager',() => {
     test('pass controlFlow nodes into task manager and expecet it to generate the proper task',() => {
-        
-        let controlFlowService = new ControlFlowService(); 
-        let ScopeService = new memScopeService();
-        let movementManager : MovementManager = new MovementManager();
-        let service : TaskManager = new TaskManager(ScopeService,controlFlowService,movementManager);
+        let mockScopeService = mock<ImemScopeService>();
+        let mockControlFlowService = new ControlFlowService(); 
+        let mockMovementMAnager = mock<IMovementManager>();
+        let mockTasksAggragatorService = mock<ITaskAggragatorService>();
+        let tasksService : TaskManager = new TaskManager(mockScopeService,mockControlFlowService,mockMovementMAnager,
+            mockTasksAggragatorService);
         let commands : IcontrolFlowNode = ControlFlowNodesArrayToControlFlowLinkedList(
             [{name : "attack" , group: "group123" , dest: "dest123" , edgeNodes : []} as AttackControlFlowNode, 
-        {name : "move" , group: "group123" , dest: "dest123" , edgeNodes : []} as MoveControlFlowNode ,
+            {name : "move" , group: "group123" , dest: "dest123" , edgeNodes: []} as MoveControlFlowNode ,
             {name : "attack" , group: "group123" , dest: "dest123" , edgeNodes : []} as AttackControlFlowNode , 
             {name : "move" , group: "group123" , dest: "dest123" , edgeNodes : []} as MoveControlFlowNode , 
             {name : "attack" , group: "group123" , dest: "dest123" , edgeNodes : []} as AttackControlFlowNode ])!;
         let order = ControlFlowNodesArrayToControlFlowLinkedList(
-            [{group : "group" , dest : "destt"} as SetValuesForCommands , commands ]
+            [{name: "setValuesForCmds", group : "group" , dest : "dest"} as SetValuesForCommands , commands ]
         ) 
-        //jest.spyOn(controlFlowService,'startNodes','get').mockReturnValue([commands])
-        service.executeControlFlowNodes(order!);
+        tasksService.executeControlFlowNodes(order!);
 
-        //expect(service.startNodes[0]).toEqual(input);
+        expect(tasksService.activeTasks.size()).toEqual(1);
+        let task = tasksService.activeTasks.values()[0] as SetValuesForCommandsTask;
+        expect(task!=null).toBeTruthy();
+        //let generatedTask = tasksService.activeTasks.values()[0];
+        //expect(typeof generatedTask).toBe("AttackTask");
     })
 })

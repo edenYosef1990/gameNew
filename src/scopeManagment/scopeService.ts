@@ -6,7 +6,13 @@ export interface Memmory {
     data : any;
 }
 
-export class memScopeService {
+export interface ImemScopeService {
+
+    Save<T>(varName : string , data : T) : void;
+    Load(varName: string) : object | undefined;
+}
+
+export class memScopeService implements ImemScopeService{
 
     private memory: Dictionary<string,object> = new Dictionary<string,Memmory>();
 
@@ -29,7 +35,7 @@ export class memScopeService {
         this.memory.setValue(varName,{type : type , data : data});
     }
 
-    Load(varName: string){
+    Load(varName: string) : object | undefined{
         return this.memory.getValue(varName);
     }
 }

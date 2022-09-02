@@ -5,7 +5,11 @@ import { inputLineToParseNodeTree } from "./parsingServiceUtils";
 import { tokenRule } from "./tokenRule";
 import { getTokenRulesList } from "./tokensRulesList";
 
-export class ParsingService {
+export interface IParsingService{
+    parseInput(input: string) : parseTreeNode;
+}
+
+export class ParsingService implements IParsingService {
 
     grammerRules: grammerRule[];
     tokens: tokenRule[];

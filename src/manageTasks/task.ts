@@ -16,6 +16,9 @@ export interface ICommandTask extends ITask {
     destCoords: number[];
 }
 
+
+export interface SetValuesForCommandsTask extends ICommandTask {
+}
 export interface AttackTask extends ICommandTask {
 }
 
