@@ -14,9 +14,9 @@ export function CalcTotalDistanceOfPath(path : Path) : number {
     return totalDist;
 } 
 
-export function AdvanceStepInLine( line : {p1 : Point , p2 : Point} , distance : number) : { p : Point , dist : number } | null {
+export function AdvanceStepInLine( line : {p1 : Point , p2 : Point} , distance : number) : { p : Point | null , dist : number } {
     let lineLength = CalcDistPoints(line.p1,line.p2);
-    if(lineLength <= distance) return null;
+    if(lineLength <= distance) return {p : null , dist : lineLength};
     let ratio = distance/lineLength;
     let x = (line.p2.x - line.p1.x) * ratio + line.p1.x;
     let y = (line.p2.y - line.p1.y) * ratio + line.p1.y;
