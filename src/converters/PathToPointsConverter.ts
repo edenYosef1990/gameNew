@@ -28,6 +28,7 @@ export function PathToPoints(path : Path , numPoints : number) : Point[] {
     let totalDist = CalcTotalDistanceOfPath(path);
     let stepSize = totalDist / numPoints;
     let currDistFromLastPoint = 0;
+    let leftStepSize = stepSize;
 
     let lines : {p1 : Point , p2 : Point }[] = [];
     for(let i = 1 ; i < path.pointsOfPath.length ; i++){
@@ -37,10 +38,11 @@ export function PathToPoints(path : Path , numPoints : number) : Point[] {
 
     let points : Point[] = [];
     for(let i = 0 ; i < numPoints ; i++){
-        let res = AdvanceStepInLine(lines[currLinesIdx] , stepSize) as { p : Point , dist : number } ; 
-        if(res){
-
-            
+        let res = AdvanceStepInLine(lines[currLinesIdx] , leftStepSize) ; 
+        if(res.p){
+           currDistFromLastPoint += res.dist;
+           points.push(res.p); 
+           leftStepSize =- leftStepSize;
 
         }
         else{
