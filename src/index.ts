@@ -7,6 +7,8 @@ import { parseTreeNode } from "./generateParsingTree/parseNodesTree";
 import { grammerRule } from "./generateParsingTree/grammerRule";
 import { tokenRule } from "./generateParsingTree/tokenRule";
 import { inputLineToParseNodeTree } from "./generateParsingTree/parsingServiceUtils";
+import { Path } from "./commonTypes/path";
+import { PathToPoints } from "./converters/PathToPointsConverter";
 
 
 
@@ -14,21 +16,11 @@ function stringsToTokens(tokenList: string[]): tokenRule[] {
     return tokenList.map(tokenStr => { return { name: tokenStr, regex: null }; });
 }
 
-
-const line: string = "a cmd";
-const grammerRule1: grammerRule = {
-    name: "cmds", description: ["cmds", ">", "cmd"],
-    handler: ((nodes: parseTreeNode[]) => {
-        let root = nodes[0];
-        return { name: root.name, value: root.value, children: [...root.children, nodes[2]] }
-    }
-    )
-};
-const grammerRule2: grammerRule = { name: "cmds", description: ["cmd"], handler: null };
-const grammerRule3: grammerRule = { name: "statment", description: ["a", "cmds"], handler: null };
-const tokens: tokenRule[] = stringsToTokens(["a", "cmd", "cmds", ">"]);
-const res = inputLineToParseNodeTree(line, tokens, [grammerRule1, grammerRule2, grammerRule3]);
-let expected: parseTreeNode[] = stringArrayToParseTreeNodesArray(["cmds"]);
-expected[0].children = stringArrayToParseTreeNodesArray(["cmd"]);
-
-console.log(JSON.stringify(res, null, 5));
+let path: Path = {
+    pointsOfPath: [
+        { x: 0, y: 0 }, { x: 30, y: 100 }, { x: 85, y: 200 }]
+    };
+let res = PathToPoints(path,11);
+console.log(res);
+    //{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0},
+    //{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}]
