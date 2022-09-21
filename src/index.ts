@@ -11,7 +11,7 @@ import { Path } from "./commonTypes/path";
 import { PathToPoints } from "./converters/PathToPointsConverter";
 
 
-
+//this is a note
 function stringsToTokens(tokenList: string[]): tokenRule[] {
     return tokenList.map(tokenStr => { return { name: tokenStr, regex: null }; });
 }
